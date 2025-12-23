@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -57,9 +57,12 @@
 
         .container {
             text-align: center;
-            background: linear-gradient(135deg, #d4f8e8 0%, #56cc9a 100%);
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
             padding: 50px 40px;
             border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
             box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
             max-width: 500px;
             width: 90%;
@@ -181,15 +184,29 @@
     <div class="container">
         <h1>Diane with an E</h1>
         <div class="form-group">
-            <label for="question">Would you like to be my girlfriend?</label>
-            <input type="text" id="question" placeholder="Let me know what you think..." disabled>
+            <label for="question">¿Te gustaría ser mi chikistrikis? (Es correcto, novia jajajaja)</label>
+            <input type="text" id="question" placeholder="A vee..." disabled>
         </div>
         <div class="button-group">
-            <button id="yesBtn">Yes</button>
-            <button id="noBtn">No</button>
+            <button id="yesBtn">Chi</button>
+            <button id="noBtn">Nel prro</button>
         </div>
-        <div class="message yes-message" id="yesMessage">💚 Aceptation is my virtue; like water I ebb, and flow. Compromise is simply the addition of time... to an oportunity I never dreamed... but you offer. 💚</div>
-        <div class="message no-message" id="noMessage">💙 Now the gate has been unlatched, thoughts pushed aside; corpses shift and offer room, a fate you must abide. 💙</div>
+        <!-- <div class="message yes-message" id="yesMessage">Aceptation is my virtue; like water I ebb, and flow. Compromise is simply the addition of time... to an oportunity I never dreamed... but you offer. 💚</div> -->
+         <div class="message yes-message" id="yesMessage">"La aceptación es mi virtud; como el agua fluyo y refluyo. El compromiso es solo la adición de tiempo... hacia una oportunidad que nunca soñé... pero tú me ofreces." 💚 ¿?</div>
+        <!-- <div class="message no-message" id="noMessage">Now the gate has been unlatched, thoughts pushed aside; time shifts and offer room, a fate you must abide.</div> -->
+         <!-- <div class="message no-message" id="noMessage">"Ahora la puerta se ha abierto, los pensamientos quedan de lado; el tiempo cambia y ofrece espacio, un destino que debes cumplir." 💙 ¿?</div> -->
+         <div class="message no-message" id="noMessage">Chale...</div>
+    </div>
+
+    <!-- Confirmation toast (initial Yes -> confirm) -->
+    <div id="confirmToast" style="display:none; position:fixed; z-index:1000; left:50%; top:50%; transform:translate(-50%,-50%);">
+        <div style="background: rgba(255,255,255,0.95); padding:20px 26px; border-radius:12px; box-shadow:0 12px 30px rgba(0,0,0,0.25); min-width:260px; text-align:center;">
+            <p style="margin:0 0 12px; font-weight:700; color:#072b1f;">¿Segura cangura?</p>
+            <div style="display:flex; gap:12px; justify-content:center;">
+                <button id="confirmYes" style="padding:10px 18px; background:#2ecc71; color:white; border:none; border-radius:8px; cursor:pointer; font-weight:700;">¡Que chi prro!</button>
+                <button id="confirmNo" style="padding:10px 18px; background:#3498db; color:white; border:none; border-radius:8px; cursor:pointer; font-weight:700;">¡¡Que nel prro!!</button>
+            </div>
+        </div>
     </div>
 
     <script>
@@ -198,18 +215,48 @@
         const yesMessage = document.getElementById('yesMessage');
         const noMessage = document.getElementById('noMessage');
         const buttonGroup = document.querySelector('.button-group');
+        const confirmToast = document.getElementById('confirmToast');
+        const confirmYes = document.getElementById('confirmYes');
+        const confirmNo = document.getElementById('confirmNo');
 
+        function showConfirm() {
+            confirmToast.style.display = 'block';
+        }
+
+        function hideConfirm() {
+            confirmToast.style.display = 'none';
+        }
+
+        // first Yes shows confirmation toast
         yesBtn.addEventListener('click', () => {
+            showConfirm();
+            document.getElementById('confirmNo').innerText = 'mm... weno mejor no jajajaja';
+        });
+
+        // immediate No behavior stays the same
+        noBtn.addEventListener('click', () => {
+            showConfirm();
+            document.getElementById('confirmYes').innerText = 'mm... weno chi';
+        });
+
+        // confirmed Yes -> apply green fade and show yes message
+        confirmYes.addEventListener('click', () => {
+            hideConfirm();
+            document.body.classList.remove('no-mode');
             document.body.classList.add('yes-mode');
             buttonGroup.style.display = 'none';
             yesMessage.style.display = 'block';
         });
 
-        noBtn.addEventListener('click', () => {
+        // cancel confirmation -> hide toast and return to main buttons
+        confirmNo.addEventListener('click', () => {
+            hideConfirm();
+            document.body.classList.remove('yes-mode');
             document.body.classList.add('no-mode');
             buttonGroup.style.display = 'none';
             noMessage.style.display = 'block';
         });
+
     </script>
 </body>
 </html>
