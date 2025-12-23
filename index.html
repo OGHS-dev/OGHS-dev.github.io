@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diane with an E</title>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-image: url('parthenon.jpg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            transition: all 1.2s ease-in-out;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* subtle overlay + blueprint grid created via background on ::before */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.25);
+            pointer-events: none;
+            z-index: 0;
+            transition: background-color 1.2s ease-in-out, opacity 1.2s ease-in-out;
+        }
+
+        body > * {
+            position: relative;
+            z-index: 1;
+        }
+
+        /* On choice, tint the overlay to the target color (creates a fading tint over the image) */
+        body.yes-mode::before {
+            background-color: rgba(46, 204, 113, 0.92);
+        }
+
+        body.no-mode::before {
+            background-color: rgba(52, 152, 219, 0.92);
+        }
+
+        .container {
+            text-align: center;
+            background: linear-gradient(135deg, #d4f8e8 0%, #56cc9a 100%);
+            padding: 50px 40px;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            max-width: 500px;
+            width: 90%;
+            color: #072b1f;
+        }
+
+        h1 {
+            font-family: 'Bebas Neue', Arial, sans-serif;
+            font-size: 3.2rem;
+            margin-bottom: 40px;
+            font-weight: 400;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            background: linear-gradient(90deg, #062743 0%, #0b3d91 40%, #123c6e 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 0 2px 6px rgba(0,0,0,0.15);
+        }
+
+        .form-group {
+            margin-bottom: 30px;
+        }
+
+        label {
+            display: block;
+            font-size: 1.3em;
+            color: #333;
+            margin-bottom: 20px;
+            font-weight: 500;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            font-size: 1em;
+            border: 2px solid #e74c3c;
+            border-radius: 8px;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        input:focus {
+            border-color: #c0392b;
+            box-shadow: 0 0 10px rgba(231, 76, 60, 0.3);
+        }
+
+        .button-group {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            margin-top: 30px;
+        }
+
+        button {
+            padding: 15px 40px;
+            font-size: 1.1em;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        #yesBtn {
+            background-color: #2ecc71;
+            color: white;
+        }
+
+        #yesBtn:hover {
+            background-color: #27ae60;
+            transform: scale(1.05);
+            box-shadow: 0 5px 20px rgba(46, 204, 113, 0.4);
+        }
+
+        #noBtn {
+            background-color: #3498db;
+            color: white;
+        }
+
+        #noBtn:hover {
+            background-color: #2980b9;
+            transform: scale(1.05);
+            box-shadow: 0 5px 20px rgba(52, 152, 219, 0.4);
+        }
+
+        .message {
+            display: none;
+            margin-top: 30px;
+            font-size: 1.5em;
+            font-weight: bold;
+            animation: fadeIn 1s ease-in-out;
+        }
+
+        .message.yes-message {
+            color: #27ae60;
+        }
+
+        .message.no-message {
+            color: #2980b9;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Diane with an E</h1>
+        <div class="form-group">
+            <label for="question">Would you like to be my girlfriend?</label>
+            <input type="text" id="question" placeholder="Let me know what you think..." disabled>
+        </div>
+        <div class="button-group">
+            <button id="yesBtn">Yes</button>
+            <button id="noBtn">No</button>
+        </div>
+        <div class="message yes-message" id="yesMessage">💚 Aceptation is my virtue; like water I ebb, and flow. Compromise is simply the addition of time... to an oportunity I never dreamed... but you offer. 💚</div>
+        <div class="message no-message" id="noMessage">💙 Now the gate has been unlatched, thoughts pushed aside; corpses shift and offer room, a fate you must abide. 💙</div>
+    </div>
+
+    <script>
+        const yesBtn = document.getElementById('yesBtn');
+        const noBtn = document.getElementById('noBtn');
+        const yesMessage = document.getElementById('yesMessage');
+        const noMessage = document.getElementById('noMessage');
+        const buttonGroup = document.querySelector('.button-group');
+
+        yesBtn.addEventListener('click', () => {
+            document.body.classList.add('yes-mode');
+            buttonGroup.style.display = 'none';
+            yesMessage.style.display = 'block';
+        });
+
+        noBtn.addEventListener('click', () => {
+            document.body.classList.add('no-mode');
+            buttonGroup.style.display = 'none';
+            noMessage.style.display = 'block';
+        });
+    </script>
+</body>
+</html>
